@@ -2,6 +2,8 @@
 
 The Loan Calculator is a simple Python-based application that allows users to calculate the monthly payment, total payment, and total interest paid for a loan. It provides a user-friendly interface for entering loan details such as the annual interest rate, loan amount, loan term, extra payments, extra payment frequency, and start date.
 
+# ACCESS THE LOAN CALCULATOR HERE 
+
 # Features
 Calculate the monthly payment based on the loan amount, annual interest rate, and loan term.
 Estimate the total payment over the loan term, including principal and interest.
@@ -14,3 +16,5 @@ Provide the loan amount.
 Optionally, add any extra payments made during the loan term and specify the extra payment frequency.
 Enter the start date of the loan repayment.
 Click the "Calculate" button to see the results.
+
+
