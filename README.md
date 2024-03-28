@@ -4,6 +4,9 @@ The Loan Calculator is a simple Python-based application that allows users to ca
 
 ## ACCESS THE LOAN CALCULATOR HERE: https://loanestimator.streamlit.app/
 
+![image](https://github.com/MuhammadAhmed-0/Loan_Calculator/assets/92883593/7ae6ff60-e6ea-4e76-984c-dfb651c25aee)
+
+
 # Features
 Calculate the monthly payment based on the loan amount, annual interest rate, and loan term.
 Estimate the total payment over the loan term, including principal and interest.
