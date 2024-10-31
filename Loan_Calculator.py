@@ -1,4 +1,6 @@
 import streamlit as st
+import plotly.graph_objects as go
+import pandas as pd
 
 def loan_calculator(annual_interest_rate, number_of_years, loan_amount, extra_payments, extra_payment_frequency, start_date):
     """
@@ -33,6 +35,40 @@ def loan_calculator(annual_interest_rate, number_of_years, loan_amount, extra_pa
         "total_interest_paid": round(total_interest_paid, 2)
     }
 
+def monthly_debt(number_of_years, loan_amount, annual_interest_rate, monthly_payment) :
+    number_of_months = number_of_years*12
+    mth, total_loan_remaining, monthly_ir = 1, loan_amount, annual_interest_rate/12
+    loan_debt, loan_fix = 0, loan_amount
+    ld, lf, tlr, paid, month = [], [], [], [], []
+
+    while mth <= number_of_months :
+        mth_inc = mth if number_of_months - mth >= 1 else number_of_months - mth
+        ir_inc = monthly_ir*mth_inc
+        reimb_debt_perc = loan_debt/loan_fix
+        loan_debt -= reimb_debt_perc*monthly_payment
+        loan_fix -= (1-reimb_debt_perc) * monthly_payment
+        loan_debt = loan_debt + (ir_inc*(loan_debt+loan_fix))
+        total_loan_remaining = loan_fix + loan_debt
+        paid.append(monthly_payment)
+        ld.append(loan_debt)
+        lf.append(loan_fix)
+        tlr.append(total_loan_remaining)
+        month.append(mth)
+    
+    return pd.DataFrame({"month":month, "paid":paid, "loan_debt":ld,
+                        "loan_fix":lf, "total loan remaining":tlr,
+                        })
+
+
+
+
+        
+
+        
+
+
+
+
 # Streamlit UI
 st.title("Loan Calculator")
 
@@ -45,8 +81,14 @@ start_date = st.date_input("Start Date", value=None)
 
 if st.button("Calculate"):
     result = loan_calculator(annual_interest_rate / 100, number_of_years, loan_amount, extra_payments, extra_payment_frequency, start_date)
-
+    df = monthly_debt(number_of_years, loan_amount, annual_interest_rate, result["monthly_payment"])
     st.write("## Results")
     st.write("Monthly Payment:", result["monthly_payment"])
     st.write("Total Payment:", result["total_payment"])
     st.write("Total Interest Paid:", result["total_interest_paid"])
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=df["month"].values, y=df["paid"].values, name="paid", mode="lines"))
+    fig.add_trace(go.Scatter(x=df["month"].values, y=df["loan_debt"].values, name="loan debt", mode="lines"))
+    fig.add_trace(go.Scatter(x=df["month"].values, y=df["loan_fix"].values, name="loan fix", mode="lines"))
+    fig.add_trace(go.Scatter(x=df["month"].values, y=df["total loan remaining"].values, name="total loan remaining", mode="lines"))
+    st.plotly_chart(fig, use_container_width=True)
