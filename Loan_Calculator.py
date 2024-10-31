@@ -54,6 +54,7 @@ def monthly_debt(number_of_years, loan_amount, annual_interest_rate, monthly_pay
         lf.append(loan_fix)
         tlr.append(total_loan_remaining)
         month.append(mth)
+        mth += 1
     
     return pd.DataFrame({"month":month, "paid":paid, "loan_debt":ld,
                         "loan_fix":lf, "total loan remaining":tlr,
